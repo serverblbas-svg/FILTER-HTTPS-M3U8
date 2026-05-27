@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAMAL PRO IPTV CONVERTER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --primary: #f0b90b; --bg: #05080a; --sidebar: #0d1117; --border: #1f2937; }
+        body { background-color: var(--bg); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card { background-color: var(--sidebar); border: 1px solid var(--border); }
+        .btn-m3u { background-color: #3b82f6; }
+        .btn-m3u:hover { background-color: #2563eb; }
+        .btn-txt { background-color: #10b981; }
+        .btn-txt:hover { background-color: #059669; }
+        .btn-m3u8 { background-color: #a855f7; }
+        .btn-m3u8:hover { background-color: #9333ea; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+<div class="card p-8 rounded-2xl shadow-2xl w-full max-w-lg border-t-4 border-t-[#f0b90b] my-8">
+    
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-extrabold text-[#f0b90b] tracking-wide">KAMAL PRO</h1>
+        <p class="text-xs text-gray-400 mt-1">ئامرازی پێشکەوتووی پاڵاوتنی توندی (HTTPS + M3U8)</p>
+    </div>
+
+    <div class="mb-8 pb-6 border-b border-gray-800">
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-blue-400">
+            <span>🔄</span> گۆڕینی M3U بۆ فۆرماتی TXT
+        </h2>
+        <form id="m3u-to-txt-form" class="space-y-4">
+            <label class="block text-sm text-gray-400 mb-1">فایلی .m3u دیاری بکە:</label>
+            <input type="file" id="m3u-file" accept=".m3u" required class="w-full p-3 bg-[#0b0e14] border border-gray-700 rounded-xl text-sm text-gray-300 file:ml-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600">
+            
+            <div class="flex items-center mt-2">
+                <input type="checkbox" id="keep-groups-m3u" checked class="form-checkbox h-5 w-5 text-blue-600 rounded bg-gray-900 border-gray-700">
+                <label for="keep-groups-m3u" class="mr-2 text-sm text-gray-300">پاراستنی ناوی گرووپەکان (Group Title)</label>
+            </div>
+            
+            <button type="submit" class="w-full btn-m3u text-white py-3 rounded-xl font-bold transition duration-200 shadow-lg">داگرتنی فایلی TXT</button>
+        </form>
+    </div>
+
+    <div class="mb-8 pb-6 border-b border-gray-800">
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-green-400">
+            <span>🔄</span> گۆڕینی TXT بۆ فۆرماتی M3U
+        </h2>
+        <form id="txt-to-m3u-form" class="space-y-4">
+            <label class="block text-sm text-gray-400 mb-1">فایلی .txt دیاری بکە:</label>
+            <input type="file" id="txt-file" accept=".txt" required class="w-full p-3 bg-[#0b0e14] border border-gray-700 rounded-xl text-sm text-gray-300 file:ml-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-green-500 file:text-white hover:file:bg-green-600">
+            
+            <label class="block text-sm text-gray-400 mb-1">بەستەری EPG URL (ئارەزوومەندانا):</label>
+            <input type="text" id="epg-url" placeholder="بۆ نموونە: https://epg.112114.xyz/pp.xml" class="w-full p-3 bg-[#0b0e14] border border-gray-700 rounded-xl text-sm text-white placeholder-gray-600 outline-none focus:border-[#f0b90b]">
+            
+            <div class="flex items-center mt-2">
+                <input type="checkbox" id="keep-groups-txt" checked class="form-checkbox h-5 w-5 text-green-600 rounded bg-gray-900 border-gray-700">
+                <label for="keep-groups-txt" class="mr-2 text-sm text-gray-300">پاراستنی ناوی گرووپەکان لە ناو فایلەکەدا</label>
+            </div>
+            
+            <button type="submit" class="w-full btn-txt text-white py-3 rounded-xl font-bold transition duration-200 shadow-lg">داگرتنی فایلی M3U</button>
+        </form>
+    </div>
+
+    <div>
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-purple-400">
+            <span>📺</span> پاڵاوتنی توندی HTTPS + M3U8
+        </h2>
+        <form id="extract-m3u8-form" class="space-y-4">
+            <label class="block text-sm text-gray-400 mb-1">فایلی کۆدی جۆری .m3u دیاری بکە:</label>
+            <input type="file" id="any-file" accept=".m3u" required class="w-full p-3 bg-[#0b0e14] border border-gray-700 rounded-xl text-sm text-gray-300 file:ml-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-purple-500 file:text-white hover:file:bg-purple-600">
+            
+            <p class="text-[11px] text-gray-500">ئەم فەرمانە <b>تەنها و تەنها</b> ئەو لینکە دەهێڵێتەوە کە بە <b>https://</b> دەست پێدەکات و پاشگرەکەی <b>.m3u8</b> بێت. هەر لینکێکی http یان بێ پاشگری m3u8 ڕەتدەکرێتەوە.</p>
+            
+            <button type="submit" class="w-full btn-m3u8 text-white py-3 rounded-xl font-bold transition duration-200 shadow-lg">فلتەرکردن و داگرتنی فایلی نوێ</button>
+        </form>
+    </div>
+    
+    <div class="text-center mt-8 pt-4 border-t border-gray-800 text-[10px] text-gray-600">
+        KAMAL PRO ULTRA SYSTEM © 2026
+    </div>
+</div>
+
+<script>
+    // 🔒 مەرجی توند و زێڕینی کاک کەمال: تەنها لێدانی بەستەری پێکەوەیی هەم HTTPS و هەم M3U8
+    function isValidKamalUrl(url) {
+        if (!url) return false;
+        const cleanUrl = url.trim().toLowerCase();
+        
+        // ۱. دەبێت بە HTTPS دەست پێبکات
+        const isHttps = cleanUrl.startsWith('https://');
+        
+        // ٢. دەبێت فایلی m3u8 بێت (چ بە سادەیی کۆتایی پێبێت یان پێش نیشانەی پرسیاری پارامیتەرەکان بێت)
+        const isM3U8 = cleanUrl.includes('.m3u8') || cleanUrl.split('?')[0].endsWith('.m3u8');
+        
+        // تەنها ئەگەر هەردوو مەرجەکە ڕاست بن، ڕێگەی پێدەدات (ئەگەر یەکێکیان HTTP بێت، قبووڵ نییە)
+        return isHttps && isM3U8;
+    }
+
+    function parseM3UToTXT(m3uContent, keepGroups) {
+        const lines = m3uContent.split('\n');
+        const channels = {};
+        let currentGroup = 'کەناڵە گشتییەکان';
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (line.startsWith('#EXTINF:')) {
+                const groupMatch = line.match(/group-title="([^"]*)"/);
+                const nameMatch = line.match(/tvg-name="([^"]*)"/);
+                const group = groupMatch ? groupMatch[1] : currentGroup;
+                
+                let name = "";
+                if (nameMatch && nameMatch[1]) {
+                    name = nameMatch[1];
+                } else {
+                    name = line.split(',').pop().trim();
+                }
+                
+                let url = '';
+                if (lines[i + 1] && lines[i + 1].trim().startsWith('http')) {
+                    url = lines[i + 1].trim();
+                } else if (lines[i + 2] && lines[i + 2].trim().startsWith('http')) {
+                    url = lines[i + 2].trim();
+                }
+
+                // لێرەدا مەرجە توندەکە جێبەجێ دەبێت بۆ فایلی دەقی
+                if (url && isValidKamalUrl(url)) {
+                    if (!channels[group]) {
+                        channels[group] = [];
+                    }
+                    channels[group].push(`${name},${url}`);
+                }
+                currentGroup = group;
+            }
+        }
+
+        let txtContent = '';
+        for (const [group, channelList] of Object.entries(channels)) {
+            if (keepGroups && channelList.length > 0) {
+                txtContent += `${group},#genre#\n`;
+            }
+            if (channelList.length > 0) {
+                txtContent += channelList.join('\n') + '\n';
+            }
+        }
+
+        return txtContent;
+    }
+
+    function convertTXTToM3U(txtContent, epgUrl, keepGroups) {
+        const defaultEpgUrl = "https://epg.112114.xyz/pp.xml";
+        const lines = txtContent.split('\n');
+        let m3uContent = `#EXTM3U x-tvg-url="${epgUrl || defaultEpgUrl}"\n`;
+        let currentGenre = 'کەناڵە گشتییەکان';
+
+        for (const line of lines) {
+            const trimmedLine = line.trim();
+            if (trimmedLine.endsWith(',#genre#')) {
+                currentGenre = trimmedLine.replace(',#genre#', '');
+            } else if (trimmedLine && !trimmedLine.startsWith('#')) {
+                const parts = trimmedLine.split(',');
+                if (parts.length >= 2) {
+                    const channelName = parts[0].trim();
+                    const channelUrl = parts.slice(1).join(',').trim();
+                    const tvgLogo = `https://epg.112114.xyz/logo/${encodeURIComponent(channelName)}.png`;
+                    
+                    // لێرەشدا مەرجەکە پشکنین دەکات پێش دروستکردنی M3U نوێیەکە
+                    if (isValidKamalUrl(channelUrl)) {
+                        if (keepGroups) {
+                            m3uContent += `#EXTINF:-1 group-title="${currentGenre}" tvg-name="${channelName}" tvg-logo="${tvgLogo}" epg-url="${epgUrl || defaultEpgUrl}",${channelName}\n`;
+                        } else {
+                            m3uContent += `#EXTINF:-1 tvg-name="${channelName}" tvg-logo="${tvgLogo}" epg-url="${epgUrl || defaultEpgUrl}",${channelName}\n`;
+                        }
+                        m3uContent += `${channelUrl}\n`;
+                    }
+                }
+            }
+        }
+
+        return m3uContent;
+    }
+
+    function filterM3U8WithMetadata(content) {
+        const lines = content.split('\n');
+        let filteredM3U = `#EXTM3U\n`;
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            if (line.startsWith('#EXTINF:')) {
+                let url = '';
+                if (lines[i + 1] && lines[i + 1].trim().startsWith('http')) {
+                    url = lines[i + 1].trim();
+                } else if (lines[i + 2] && lines[i + 2].trim().startsWith('http')) {
+                    url = lines[i + 2].trim();
+                }
+                
+                // جێبەجێکردنی مەرجەکە بۆ بەشی سێیەم کە تەنها ئەو لینکە فەرمییانە دەهێڵێتەوە کە دەتەوێت
+                if (url && isValidKamalUrl(url)) {
+                    filteredM3U += `${line}\n${url}\n`;
+                }
+            }
+        }
+        
+        return filteredM3U;
+    }
+
+    function downloadFile(content, filename) {
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function getCurrentDateTime() {
+        const now = new Date();
+        return now.getFullYear() + '-' +
+               ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
+               ('0' + now.getDate()).slice(-2) + '_' +
+               ('0' + now.getHours()).slice(-2) +
+               ('0' + now.getMinutes()).slice(-2);
+    }
+
+    function getFileNameWithoutExtension(filename) {
+        return filename.split('.').slice(0, -1).join('.');
+    }
+
+    document.getElementById('m3u-to-txt-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const file = document.getElementById('m3u-file').files[0];
+        const reader = new FileReader();
+        const keepGroups = document.getElementById('keep-groups-m3u').checked;
+        reader.onload = function(e) {
+            const m3uContent = e.target.result;
+            const txtContent = parseM3UToTXT(m3uContent, keepGroups);
+            const originalName = getFileNameWithoutExtension(file.name);
+            const newFileName = `${originalName}_${getCurrentDateTime()}.txt`;
+            downloadFile(txtContent, newFileName);
+        };
+        reader.readAsText(file, 'utf-8');
+    });
+
+    document.getElementById('txt-to-m3u-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const file = document.getElementById('txt-file').files[0];
+        const epgUrl = document.getElementById('epg-url').value.trim();
+        const reader = new FileReader();
+        const keepGroups = document.getElementById('keep-groups-txt').checked;
+        reader.onload = function(e) {
+            const txtContent = e.target.result;
+            const m3uContent = convertTXTToM3U(txtContent, epgUrl, keepGroups);
+            const originalName = getFileNameWithoutExtension(file.name);
+            const newFileName = `${originalName}_${getCurrentDateTime()}.m3u`;
+            downloadFile(m3uContent, newFileName);
+        };
+        reader.readAsText(file, 'utf-8');
+    });
+
+    document.getElementById('extract-m3u8-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const file = document.getElementById('any-file').files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const fileContent = e.target.result;
+            const filteredM3UContent = filterM3U8WithMetadata(fileContent);
+            const originalName = getFileNameWithoutExtension(file.name);
+            const newFileName = `${originalName}_kamal_pro_filtered_${getCurrentDateTime()}.m3u`;
+            downloadFile(filteredM3UContent, newFileName);
+        };
+        reader.readAsText(file, 'utf-8');
+    });
+</script>
+</body>
+</html>
